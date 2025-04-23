@@ -45,6 +45,9 @@
           # Install other dependencies
           curl -fsSL https://install.codika.dev/install | bash
           curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
+
+          # Finish Codika installation
+          codika install
         '';
         build-flutter = ''
           cd $HOME/myapp/android
