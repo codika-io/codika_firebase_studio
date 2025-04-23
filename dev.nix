@@ -27,7 +27,7 @@
           export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"
           echo 'export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"' >> $HOME/.bashrc
 
-          fvm global 3.29.3 -f
+          fvm global 3.29.2 -f
           fvm flutter --version
 
           fvm dart pub global activate mason_cli
