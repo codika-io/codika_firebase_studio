@@ -8,10 +8,13 @@
     pkgs.nodePackages.firebase-tools
     pkgs.jdk17
     pkgs.unzip
-    pkgs.flutter
+    pkgs.git
+    # Not using pkgs.flutter as we'll install directly from GitHub
   ];
   # Sets environment variables in the workspace
-  env = {};
+  env = {
+    PATH = "$HOME/flutter/bin:$HOME/flutter/bin/cache/dart-sdk/bin:$HOME/.local/bin:$PATH";
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
@@ -22,19 +25,35 @@
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
         installDependencies = ''
+          # Install Flutter directly from GitHub
+          git clone https://github.com/flutter/flutter.git $HOME/flutter
+          
+          # Set up path and install Flutter dependencies
+          export PATH="$HOME/flutter/bin:$HOME/flutter/bin/cache/dart-sdk/bin:$PATH"
+          flutter precache
+          flutter doctor
+          
+          # Install FVM for version management
+          mkdir -p $HOME/.local/bin/
+          curl -fsSL https://raw.githubusercontent.com/leoafarias/fvm/e04a1f455c4db33c4c220a5239acb76c0e132c02/scripts/install.sh | bash
+          
+          # Install other tools
           flutter pub get
           dart pub global activate mason_cli
           dart pub global activate flutterfire_cli
+          
+          # Install other dependencies
           curl -fsSL https://install.codika.dev/install | bash
+          curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
         '';
         build-flutter = ''
-          cd /home/user/myapp/android
+          cd $HOME/myapp/android
 
           ./gradlew \
             --parallel \
             -Pverbose=true \
             -Ptarget-platform=android-x86 \
-            -Ptarget=/home/user/myapp/lib/main.dart \
+            -Ptarget=$HOME/myapp/lib/main.dart \
             -Pbase-application-name=android.app.Application \
             -Pdart-defines=RkxVVFRFUl9XRUJfQ0FOVkFTS0lUX1VSTD1odHRwczovL3d3dy5nc3RhdGljLmNvbS9mbHV0dGVyLWNhbnZhc2tpdC85NzU1MDkwN2I3MGY0ZjNiMzI4YjZjMTYwMGRmMjFmYWMxYTE4ODlhLw== \
             -Pdart-obfuscation=false \
@@ -53,17 +72,25 @@
       };
       
       # To run something each time the workspace is (re)started, use the `onStart` hook
+      onStart = {
+        updateFlutter = ''
+          # Ensure Flutter is up to date
+          cd $HOME/flutter
+          git pull
+          flutter precache
+        '';
+      };
     };
     # Enable previews and customize configuration
     previews = {
       enable = true;
       previews = {
         web = {
-          command = ["flutter" "run" "--machine" "-d" "web-server" "--web-hostname" "0.0.0.0" "--web-port" "$PORT"];
+          command = ["fvm" "flutter" "run" "--machine" "-d" "web-server" "--web-hostname" "0.0.0.0" "--web-port" "$PORT"];
           manager = "flutter";
         };
         android = {
-          command = ["flutter" "run" "--machine" "-d" "android" "-d" "localhost:5555"];
+          command = ["fvm" "flutter" "run" "--machine" "-d" "android" "-d" "localhost:5555"];
           manager = "flutter";
         };
       };
