@@ -1,9 +1,9 @@
 {
-  "name": "Flutter",
-  "description": "Flutter create template",
+  "name": "Codika",
+  "description": "Codika create template",
   "categories": ["Mobile"],
-  "icon": "https://www.gstatic.com/images/branding/productlogos/flutter/v6/192px.svg",
-  "publisher": "Rody Davis",
+  "icon": "https://firebasestorage.googleapis.com/v0/b/codika-app-t17t-prod.firebasestorage.app/o/assets%2FProfilePic_zoomed_220_220.png?alt=media&token=d7a2e9fc-9b49-47f5-8dd5-e0b174f9d1e7",
+  "publisher": "Romain Pattyn",
   "host": {
     "virtualization": "true"
   },
