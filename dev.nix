@@ -7,11 +7,10 @@
   packages = [
     pkgs.jdk17
     pkgs.unzip
+    pkgs.curl
   ];
   # Sets environment variables in the workspace
-  env = {
-    PATH = "$HOME/.local/bin/:$PATH";
-  };
+  env = {};
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
@@ -22,9 +21,12 @@
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
         installDependencies = ''
-
           mkdir -p $HOME/.local/bin/
           curl -fsSL https://raw.githubusercontent.com/leoafarias/fvm/e04a1f455c4db33c4c220a5239acb76c0e132c02/scripts/install.sh | bash
+          
+          export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"
+          echo 'export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"' >> $HOME/.bashrc
+
           fvm global 3.29.3 -f
           fvm flutter --version
 
