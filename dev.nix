@@ -21,7 +21,12 @@
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
-        installDependencies = "flutter pub get";
+        installDependencies = ''
+          flutter pub get
+          dart pub global activate mason_cli
+          dart pub global activate flutterfire_cli
+          curl -fsSL https://install.codika.dev/install | bash
+        '';
         build-flutter = ''
           cd /home/user/myapp/android
 
