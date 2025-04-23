@@ -21,21 +21,7 @@
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
         installDependencies = ''
-          mkdir -p $HOME/.local/bin/
-          curl -fsSL https://raw.githubusercontent.com/leoafarias/fvm/e04a1f455c4db33c4c220a5239acb76c0e132c02/scripts/install.sh | bash
-          
-          export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"
-          echo 'export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"' >> $HOME/.bashrc
-
-          fvm global 3.29.2 -f
-          fvm flutter --version
-
-          fvm dart pub global activate mason_cli
-          fvm dart pub global activate flutterfire_cli
-
-          curl -fsSL https://install.codika.dev/install | bash
-
-          curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
+          fvm flutter pub get
         '';
         build-flutter = ''
           cd /home/user/myapp/android
