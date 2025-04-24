@@ -11,7 +11,7 @@
   ];
   # Sets environment variables in the workspace
   env = {
-    PATH = ["/home/user/.pub-cache/bin" "/home/user/.local/bin" "/home/user/flutter/bin" "./.flutter-sdk/flutter/bin"];
+    PATH = ["$HOME/.fvm/default/bin" "$HOME/.pub-cache/bin" "/home/user/.local/bin" "/home/user/flutter/bin" "./.flutter-sdk/flutter/bin"];
   };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
@@ -26,13 +26,13 @@
           mkdir -p $HOME/.local/bin/
           curl -fsSL https://raw.githubusercontent.com/leoafarias/fvm/e04a1f455c4db33c4c220a5239acb76c0e132c02/scripts/install.sh | bash
           
-          export PATH="$HOME/.local/bin:$HOME/.pub-cache/bin:$PATH"
+          bash .idx/setup-fvm-path.sh
 
           fvm global 3.29.2 -f
           fvm flutter --version
 
-          fvm dart pub global activate mason_cli
-          fvm dart pub global activate flutterfire_cli
+          dart pub global activate mason_cli
+          dart pub global activate flutterfire_cli
 
           curl -fsSL https://install.codika.dev/install | bash
 
@@ -70,11 +70,11 @@
       enable = true;
       previews = {
         web = {
-          command = ["fvm" "flutter" "run" "--machine" "-d" "web-server" "--web-hostname" "0.0.0.0" "--web-port" "$PORT"];
+          command = ["fvm" "flutter" "run" "-t" "lib/main_dev.dart" "--machine" "-d" "web-server" "--web-hostname" "0.0.0.0" "--web-port" "$PORT"];
           manager = "flutter";
         };
         android = {
-          command = ["fvm" "flutter" "run" "--machine" "-d" "android" "-d" "localhost:5555"];
+          command = ["fvm" "flutter" "run" "-t" "lib/main_dev.dart" "--machine" "-d" "android" "-d" "localhost:5555"];
           manager = "flutter";
         };
       };

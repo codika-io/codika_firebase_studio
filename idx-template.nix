@@ -11,6 +11,7 @@
         git clone https://github.com/codika-io/codika_flutter_templates.git "$out"
         mkdir -p "$out"/.idx
         cp ${./dev.nix} "$out"/.idx/dev.nix
+        cp ${./setup-fvm-path.sh} "$out"/.idx/setup-fvm-path.sh
         install --mode u+rw ${./dev.nix} "$out"/.idx/dev.nix
         chmod -R u+w "$out"
     '';
